@@ -20,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(ZipcodeController::class)->group(function (){
-    Route::get('/zip-codes/{zip_code}', "show")->name("zip-codes.show");
+    Route::get('/zip-codes/{zip_code}', "show")
+        ->name("zip-codes.show")
+        ->where("zip_code","\d{5,5}");
 });

@@ -27,9 +27,6 @@ class ZipcodeService extends ZipcodeRepository
      */
     public function getZipCode(string $zipcode): ?array
     {
-        if (!is_numeric($zipcode))
-            throw new \Exception("Debe de ingresar solo numeros, favor de intentar nuevamente",419);
-
         if ($response = Cache::store('redis')->get($zipcode))
             return  $response;
 
@@ -58,11 +55,11 @@ class ZipcodeService extends ZipcodeRepository
                     "name"  => strtoupper($data["D_mnpio"]),
                 ]
             ];
+
+            Cache::store('redis')->put($zipcode,$response, now()->addMinutes(60));
         }
 
-        Cache::store('redis')->put($zipcode,$response, now()->addMinutes(60));
-
-        return $response;
+        return $response->toArray();
 
     }
 }
