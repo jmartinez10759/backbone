@@ -57,9 +57,11 @@ class ZipcodeService extends ZipcodeRepository
             ];
 
             Cache::store('redis')->put($zipcode,$response, now()->addMinutes(60));
+
+            return $response;
         }
 
-        return $response->toArray();
+        abort(404);
 
     }
 }
