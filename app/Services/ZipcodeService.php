@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Models\Zipcode;
 use App\Repositories\ZipcodeRepository;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class ZipcodeService extends ZipcodeRepository
 {
@@ -19,10 +22,12 @@ class ZipcodeService extends ZipcodeRepository
     /**
      * @param string $zipcode
      * @return array|null
+     * @throws InvalidArgumentException
      */
     public function getZipCode(string $zipcode): ?array
     {
-        #agregar cache
+        if ($response = Cache::store('redis')->get($zipcode))
+            return  $response;
 
         $response = $this->readFileZipCode()->where("d_codigo","=",$zipcode);
         if ($response->count() > 0){
@@ -51,7 +56,9 @@ class ZipcodeService extends ZipcodeRepository
             ];
         }
 
-;        return $response;
+        Cache::store('redis')->put($zipcode,$response, now()->addMinutes(60));
+
+        return $response;
 
     }
 }
