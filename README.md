@@ -11,6 +11,7 @@ proporciona en relacion a colonia que se requiere obtener, los puntos a consider
 - Validacion del numero ingresado del Codigo Postal
 - Collection de Laravel
 - Cache Redis para velocidad de respuesta
+- Unit Test del endpoint de codigos postales
 - Manejo de Servicio
 - Manejo de Repository
 - Manejo de Resource y Collection como repuesta de los datos
