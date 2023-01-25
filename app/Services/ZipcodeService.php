@@ -23,9 +23,13 @@ class ZipcodeService extends ZipcodeRepository
      * @param string $zipcode
      * @return array|null
      * @throws InvalidArgumentException
+     * @throws \Exception
      */
     public function getZipCode(string $zipcode): ?array
     {
+        if (!is_numeric($zipcode))
+            throw new \Exception("Debe de ingresar solo numeros, favor de intentar nuevamente",419);
+
         if ($response = Cache::store('redis')->get($zipcode))
             return  $response;
 
